@@ -15,5 +15,5 @@ DISCORD_TOKEN = os.environ.get("DISCORD_TOKEN", "")
 DISCORD_CHANNEL_ID = os.environ.get("DISCORD_CHANNEL_ID", "")
 DISCORD_NAME_TEMPLATE = os.environ.get(
     "DISCORD_NAME_TEMPLATE",
-    "club-space-{count-people}"
+    "club space 👥{count}"
 )

@@ -9,7 +9,7 @@ def capture_latest():
         "-y",
         "-hide_banner", "-loglevel", "error",
         "-rtsp_transport", "tcp",
-        "-stimeout", "5000000",
+        "-timeout", "5000000",
         "-i", RTSP_URL,
         "-frames:v", "1",
         "-q:v", "2",
