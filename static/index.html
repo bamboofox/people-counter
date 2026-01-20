@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bamboofox 社辦人數統計</title>
+  <style>
+    @import url('https://font.emtech.cc/css/ChironHeiHK');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      padding: 4rem 2rem;
+      background-color: #282A36;
+      color: #F8F8F2;
+      font-family: ChironHeiHK, sans-serif;
+    }
+
+    main {
+      max-width: 50rem;
+      margin: auto;
+      text-align: center;
+    }
+    h1{
+      margin-bottom: 2rem;
+    }
+
+    img{
+      border-radius: 1rem;
+    }
+  </style>
+</head>
+
+<body>
+  <main>
+    <h1 id="count">載入中…</h1>
+
+    <div style="position:relative; display:inline-block;">
+      <img id="img" style="max-width:100%;">
+      <canvas id="cv" style="position:absolute; left:0; top:0;"></canvas>
+    </div>
+
+  </main>
+  <script>
+    async function update() {
+      const r = await fetch('/status');
+      const d = await r.json();
+
+      const img = document.getElementById('img');
+      const cv = document.getElementById('cv');
+      const ctx = cv.getContext('2d');
+
+      img.onload = () => {
+        cv.width = img.clientWidth;
+        cv.height = img.clientHeight;
+        ctx.clearRect(0, 0, cv.width, cv.height);
+
+        const sx = img.clientWidth / d.width;
+        const sy = img.clientHeight / d.height;
+
+        ctx.strokeStyle = 'red';
+        ctx.lineWidth = 2;
+
+        for (const b of d.boxes) {
+          ctx.strokeRect(
+            b.x1 * sx,
+            b.y1 * sy,
+            (b.x2 - b.x1) * sx,
+            (b.y2 - b.y1) * sy
+          );
+        }
+      };
+
+      img.src = `/image?t=${Date.now()}`;
+      document.getElementById('count').innerText =
+        `目前人數：${d.count}（${d.updated_at}）`;
+    }
+
+    setInterval(update, 3000);
+    update();
+  </script>
+</body>
+
+</html>
