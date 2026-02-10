@@ -5,7 +5,7 @@ import time, datetime
 
 from .camera import capture_latest
 from .detector import detect
-from .discord import update_channel
+from .discord import update_channel, init_message
 from .config import IMAGE_PATH, INTERVAL
 
 app = FastAPI()
@@ -32,6 +32,9 @@ def worker():
             print("worker error:", e)
 
         time.sleep(INTERVAL)
+
+# 啟動時發送初始 Discord 訊息
+init_message()
 
 Thread(target=worker, daemon=True).start()
 
